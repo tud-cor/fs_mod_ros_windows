@@ -1,0 +1,21 @@
+# used to create and interact with the named pipe
+pypiwin32
+
+# other dependencies
+numpy
+
+# basic ROS packages
+--extra-index-url https://rospypi.github.io/simple
+geometry_msgs
+nav_msgs
+pykdl
+rosgraph_msgs
+rospy
+rospy_message_converter
+sensor_msgs
+std_msgs
+tf2_ros
+tf_conversions
+
+# memorpy3_fork
+https://github.com/tud-cor/memorpy3/archive/refs/heads/wip_py3_patches.zip
