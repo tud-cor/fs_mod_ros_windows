@@ -124,16 +124,8 @@ if __name__ == '__main__':
         named_pipe_path = os.path.join(os.environ['USERPROFILE'], "Documents/My Games/FarmingSimulator2019/mods/modROS/ROS_messages")
         # check if a symbolic link to a named pipe has been created
         if not (os.path.islink(named_pipe_path)):
-            print("symbolic link has not yet been created, creating symbolic link now (make sure cmd shell is elevated)")
-            # source file path
-            src = "\\\\.\pipe\ROS_messages"
-            # destination file path
-            dst = named_pipe_path
-            try:
-                os.symlink(src, dst)
-            except OSError as e:
-                sys.exit(f"Unable to symlink the named pipe: {e}")
-            print("symbolic link to named pipe has been created successfully")
+            print("Cannot find required symbolic link, has it been created? Please refer to the readme for information.")
+            sys.exit(1)
         else:
             print("symbolic link has already been created")
         
