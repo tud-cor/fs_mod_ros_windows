@@ -29,7 +29,7 @@ This named pipe needs to be created.
 Open a `cmd` window and run the following command:
 
 ```cmd
-mklink "%USERPROFILE%\Documents\My Games\FarmingSimulator2019\mods\FS19_modROS\ROS_messages" \\.\pipe\ROS_messages
+mklink "%USERPROFILE%\Documents\My Games\FarmingSimulator2019\mods\modROS\ROS_messages" \\.\pipe\ROS_messages
 ```
 
 If you get the message *You do not have sufficient privilege to perform this operation*, right-click the Command Prompt shortcut, and select __Run as administrator__ to start an elevated shell. Then try creating the symbolic link again.
