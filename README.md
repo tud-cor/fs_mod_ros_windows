@@ -24,7 +24,7 @@ git clone https://github.com/tud-cor/fs_mod_ros_windows.git
 #### Creating the symbolic link
 
 In order to exchange data with the Python side of the mod, the script uses a symbolic link to a *named pipe*.
-This named pipe needs to be created.
+The symbolic link needs to be created *only once*. Do not create it every time the FarmSim is rebooted.
 
 Open a `cmd` window and run the following command:
 
