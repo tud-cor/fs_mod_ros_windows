@@ -41,8 +41,8 @@ class SharedMemorySegment(object):
         buflen_len=1, expected_size=None
     ):
         self.__buflen_len = buflen_len
-        # self.__mw = MemWorker(name=process_name)
-        self.__mw = MemWorker(pid=5568)
+        self.__mw = MemWorker(name=process_name)
+        # self.__mw = MemWorker(pid=5568)
         # sentinel values
         self.__marker_start = marker_start
         self.__marker_end = marker_end
