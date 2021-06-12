@@ -72,17 +72,19 @@ def create_pipe(pipe_name):
     pipe_path = f"\\\\.\\pipe\\{pipe_name}"
 
     security_attributes = pywintypes.SECURITY_ATTRIBUTES()
-    '''the maximum number of instances that can be created for this pipe: unlimited 
-    so that we are allowed to create a new instance of an existing named pipe for other messages in other files'''
-    PIPE_UNLIMITED_INSTANCES = 255
+
+    out_buf_sz = 64*1024
+    in_buf_sz = 64*1024
+    def_timeout = 0
+
     #  the second parameter "pDacl", if it is NULL, a NULL DACL is assigned to the security descriptor, which allows all access to the object
     security_attributes.SetSecurityDescriptorDacl(1, None, 1)
     pipe = win32pipe.CreateNamedPipe(
         pipe_path,
         win32pipe.PIPE_ACCESS_DUPLEX,
         win32pipe.PIPE_TYPE_MESSAGE | win32pipe.PIPE_READMODE_MESSAGE | win32pipe.PIPE_WAIT,
-        PIPE_UNLIMITED_INSTANCES, 65536, 65536,
-        0,
+        win32pipe.PIPE_UNLIMITED_INSTANCES, out_buf_sz, in_buf_sz,
+        def_timeout,
         security_attributes
     )
 
@@ -112,7 +114,9 @@ if __name__ == '__main__':
         print("got client from game!!")
 
         while not rospy.is_shutdown():
-            resp = win32file.ReadFile(pipe, 64*1024)
+            read_sz = 64*1024
+            resp = win32file.ReadFile(pipe, read_sz)
+
             #  convert json data from lua to ros message (data read from the pipe is in bytes: need to convert to string)
 
             msg_list = resp[1].decode("utf-8").split("\n")
