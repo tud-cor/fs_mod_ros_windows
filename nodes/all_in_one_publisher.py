@@ -142,4 +142,14 @@ if __name__ == '__main__':
 
 
     except rospy.ROSInterruptException:
-        pass
+        sys.exit(1)
+
+    except pywintypes.error as e:
+        errno, _, errstr = e.args
+        if errno == 109:
+            print(f"Lost connection: {errstr}")
+        else:
+            raise
+
+    except:
+        raise
