@@ -97,7 +97,7 @@ class ROSMessagePublisher:
 
 
 def create_pipe(pipe_name):
-    pipe_path = "\\\\.\pipe\\" + pipe_name
+    pipe_path = f"\\\\.\\pipe\\{pipe_name}"
 
     security_attributes = pywintypes.SECURITY_ATTRIBUTES()
     '''the maximum number of instances that can be created for this pipe: unlimited 
