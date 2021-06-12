@@ -106,12 +106,13 @@ def create_pipe(pipe_name):
     #  the second parameter "pDacl", if it is NULL, a NULL DACL is assigned to the security descriptor, which allows all access to the object
     security_attributes.SetSecurityDescriptorDacl(1, None, 1)
     pipe = win32pipe.CreateNamedPipe(
-    pipe_path,
-    win32pipe.PIPE_ACCESS_DUPLEX,
-    win32pipe.PIPE_TYPE_MESSAGE | win32pipe.PIPE_READMODE_MESSAGE | win32pipe.PIPE_WAIT,
-    PIPE_UNLIMITED_INSTANCES, 65536, 65536,
-    0,
-    security_attributes)
+        pipe_path,
+        win32pipe.PIPE_ACCESS_DUPLEX,
+        win32pipe.PIPE_TYPE_MESSAGE | win32pipe.PIPE_READMODE_MESSAGE | win32pipe.PIPE_WAIT,
+        PIPE_UNLIMITED_INSTANCES, 65536, 65536,
+        0,
+        security_attributes
+    )
 
     return pipe
 
