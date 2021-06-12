@@ -95,27 +95,25 @@ class ROSMessagePublisher:
                 
         self.pub_laser.publish(scan)
 
-    @staticmethod
-    def create_pipe(pipe_name):
-        pipe_path = "\\\\.\pipe\\" + pipe_name
 
-        security_attributes = pywintypes.SECURITY_ATTRIBUTES()
-        '''the maximum number of instances that can be created for this pipe: unlimited 
-        so that we are allowed to create a new instance of an existing named pipe for other messages in other files'''
-        PIPE_UNLIMITED_INSTANCES = 255
-        #  the second parameter "pDacl", if it is NULL, a NULL DACL is assigned to the security descriptor, which allows all access to the object
-        security_attributes.SetSecurityDescriptorDacl(1, None, 1)
-        pipe = win32pipe.CreateNamedPipe(
-        pipe_path,
-        win32pipe.PIPE_ACCESS_DUPLEX,
-        win32pipe.PIPE_TYPE_MESSAGE | win32pipe.PIPE_READMODE_MESSAGE | win32pipe.PIPE_WAIT,
-        PIPE_UNLIMITED_INSTANCES, 65536, 65536,
-        0,
-        security_attributes)
+def create_pipe(pipe_name):
+    pipe_path = "\\\\.\pipe\\" + pipe_name
 
-        return pipe
+    security_attributes = pywintypes.SECURITY_ATTRIBUTES()
+    '''the maximum number of instances that can be created for this pipe: unlimited 
+    so that we are allowed to create a new instance of an existing named pipe for other messages in other files'''
+    PIPE_UNLIMITED_INSTANCES = 255
+    #  the second parameter "pDacl", if it is NULL, a NULL DACL is assigned to the security descriptor, which allows all access to the object
+    security_attributes.SetSecurityDescriptorDacl(1, None, 1)
+    pipe = win32pipe.CreateNamedPipe(
+    pipe_path,
+    win32pipe.PIPE_ACCESS_DUPLEX,
+    win32pipe.PIPE_TYPE_MESSAGE | win32pipe.PIPE_READMODE_MESSAGE | win32pipe.PIPE_WAIT,
+    PIPE_UNLIMITED_INSTANCES, 65536, 65536,
+    0,
+    security_attributes)
 
-
+    return pipe
 
 
 if __name__ == '__main__':
@@ -136,7 +134,7 @@ if __name__ == '__main__':
 
 
         rospy.init_node('ros_publisher', anonymous=True)
-        pipe = object_class.create_pipe("ROS_messages")
+        pipe = create_pipe("ROS_messages")
         print("waiting for client from FarmSim19")
         win32pipe.ConnectNamedPipe(pipe, None)
         print("got client from game!!")
