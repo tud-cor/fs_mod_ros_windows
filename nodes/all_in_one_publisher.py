@@ -43,29 +43,15 @@ from sensor_msgs.msg import Imu
 from tf2_msgs.msg import TFMessage
 
 
+
 class ROSMessagePublisher:
-    # some class variables shared across all instances of the class
 
-    # sim time message initialization 
-    pub_sim = rospy.Publisher('clock', Clock, queue_size=10)  
+    # creat esome class variables shared across all instances of the class
+    # instantiate an empty dictionary
+    # it's used for storing an unique topic_name and publisher as key-value pairs in dict as class variable so that the publisher won't be created repeatedly
+    # NOTE: topic_name = <namespace>/<topic_name> so it's always unique
+    pub_dict = {}
 
-    # instantiate object of imu publisher
-    pub_imu = rospy.Publisher('imu', Imu, queue_size=10)
-
-    # instantiate object of tf publisher
-    pub_tf = rospy.Publisher('tf', TFMessage, queue_size=10)
-
-    # instantiate object of float publisher
-    pub_float64 = rospy.Publisher('fs_output', Float64MultiArray, queue_size=10)
-
-    # instantiate empty dictionary to store vehicle_ns-odom_publisher pairs
-    pub_odom_dic = {}
-
-    # instantiate empty dictionary to store vehicle_ns-scan_publisher pairs
-    pub_scan_dic = {}
-
-    # instantiate empty dictionary to store vehicle_ns-imu_publisher pairs
-    pub_imu_dic = {}
 
 # store publisher object as value in a dic given a vehicle namespace, message-type specific dictionary, topic name and message class
 def create_publisher(veh_ns, pub_dic, topic_name, ms_class):
