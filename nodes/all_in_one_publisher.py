@@ -45,12 +45,12 @@ from tf2_msgs.msg import TFMessage
 
 
 class ROSMessagePublisher:
+    def __init__(self):
+        # instantiate an empty dictionary
+        # it's used for storing an unique topic_name and publisher as key-value pairs in dict as class variable so that the publisher won't be created repeatedly
+        # NOTE: topic_name = <namespace>/<topic_name> so it's always unique
+        self.pub_dict = {}
 
-    # creat esome class variables shared across all instances of the class
-    # instantiate an empty dictionary
-    # it's used for storing an unique topic_name and publisher as key-value pairs in dict as class variable so that the publisher won't be created repeatedly
-    # NOTE: topic_name = <namespace>/<topic_name> so it's always unique
-    pub_dict = {}
 
 
 # store publisher object as value in a dic given a vehicle namespace, message-type specific dictionary, topic name and message class
