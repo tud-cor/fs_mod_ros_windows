@@ -109,40 +109,39 @@ if __name__ == '__main__':
             #  convert json data from lua to ros message (data read from the pipe is in bytes: need to convert to string)
 
             msg_list = resp[1].decode("utf-8").split("\n")
-            if msg_list[0] == "rosgraph_msgs/Clock":
-                sim_time_msg = json_message_converter.convert_json_to_ros_message('rosgraph_msgs/Clock', msg_list[1])
-                object_class.pub_sim.publish(sim_time_msg)
+            topic_name = msg_list[0]
+            if msg_list[1] == "rosgraph_msgs/Clock":
+                if msg_list[0] not in object_class.pub_dict:
+                    object_class.create_publisher(topic_name, Clock)
+                sim_time_msg = json_message_converter.convert_json_to_ros_message('rosgraph_msgs/Clock', msg_list[2])
+                object_class.pub_dict[topic_name].publish(sim_time_msg)
 
             elif msg_list[1] == "nav_msgs/Odometry":
-                veh_ns = msg_list[0]
-                if veh_ns not in object_class.pub_odom_dic:
-                    topic_name = veh_ns + "/odom"
-                    create_publisher(veh_ns, object_class.pub_odom_dic, topic_name, Odometry)
+                if msg_list[0] not in object_class.pub_dict:
+                    object_class.create_publisher(topic_name, Odometry)
                 odom_msg = json_message_converter.convert_json_to_ros_message('nav_msgs/Odometry', msg_list[2])
-                object_class.pub_odom_dic[veh_ns].publish(odom_msg)
+                object_class.pub_dict[topic_name].publish(odom_msg)
 
             elif msg_list[1] == "sensor_msgs/LaserScan":
-                veh_ns = msg_list[0]
-                if veh_ns not in object_class.pub_scan_dic:
-                    topic_name = veh_ns + "/scan"
-                    create_publisher(veh_ns, object_class.pub_scan_dic, topic_name, LaserScan)
+                if msg_list[0] not in object_class.pub_dict:
+                    object_class.create_publisher(topic_name, LaserScan)
                 scan_msg = json_message_converter.convert_json_to_ros_message('sensor_msgs/LaserScan', msg_list[2])
                 for count, value in enumerate(scan_msg.ranges):
                     if float(value) == 1000:
                         scan_msg.ranges[count] = float('Inf')
-                object_class.pub_scan_dic[veh_ns].publish(scan_msg)
+                object_class.pub_dict[topic_name].publish(scan_msg)
                 
             elif msg_list[1] == "sensor_msgs/Imu":
-                veh_ns = msg_list[0]
-                if veh_ns not in object_class.pub_imu_dic:
-                    topic_name = veh_ns + "/imu"
-                    create_publisher(veh_ns, object_class.pub_imu_dic, topic_name, Imu)
+                if msg_list[0] not in object_class.pub_dict:
+                    object_class.create_publisher(topic_name, Imu)
                 imu_msg = json_message_converter.convert_json_to_ros_message('sensor_msgs/Imu', msg_list[2])
-                object_class.pub_imu_dic[veh_ns].publish(imu_msg)
+                object_class.pub_dict[topic_name].publish(imu_msg)
 
-            elif msg_list[0] == "tf2_msgs/TFMessage":
-                tf_msg = json_message_converter.convert_json_to_ros_message('tf2_msgs/TFMessage', msg_list[1])
-                object_class.pub_tf.publish(tf_msg)
+            elif msg_list[1] == "tf2_msgs/TFMessage":
+                if msg_list[0] not in object_class.pub_dict:
+                    object_class.create_publisher(topic_name, TFMessage)
+                tf_msg = json_message_converter.convert_json_to_ros_message('tf2_msgs/TFMessage', msg_list[2])
+                object_class.pub_dict[topic_name].publish(tf_msg)
 
 
     except rospy.ROSInterruptException:
