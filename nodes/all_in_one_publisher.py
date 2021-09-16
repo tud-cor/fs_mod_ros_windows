@@ -52,10 +52,10 @@ class ROSMessagePublisher:
         self.pub_dict = {}
 
 
-
-# store publisher object as value in a dic given a vehicle namespace, message-type specific dictionary, topic name and message class
-def create_publisher(veh_ns, pub_dic, topic_name, ms_class):
-    pub_dic[veh_ns] = rospy.Publisher(topic_name, ms_class, queue_size=10)
+    # store publisher object as value in a dict given topic name and message class
+    def create_publisher(self, topic_name, ms_class):
+        self.pub_dict[topic_name] = rospy.Publisher(topic_name, ms_class, queue_size=10)
+        print("here")
 
 def create_pipe(pipe_name):
     pipe_path = f"\\\\.\\pipe\\{pipe_name}"
