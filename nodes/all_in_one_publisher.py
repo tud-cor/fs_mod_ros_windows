@@ -55,7 +55,6 @@ class ROSMessagePublisher:
     # store publisher object as value in a dict given topic name and message class
     def create_publisher(self, topic_name, ms_class):
         self.pub_dict[topic_name] = rospy.Publisher(topic_name, ms_class, queue_size=10)
-        print("here")
 
 def create_pipe(pipe_name):
     pipe_path = f"\\\\.\\pipe\\{pipe_name}"
