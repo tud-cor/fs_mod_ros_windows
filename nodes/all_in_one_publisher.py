@@ -129,34 +129,6 @@ if __name__ == '__main__':
                 # print(msg_string[0])
                 # print(len(msg_string[1]))
                 # print("-------------")
-        while not rospy.is_shutdown():
-            read_sz = 64*1024
-            resp = win32file.ReadFile(pipe, read_sz)
-
-            #  convert json data from lua to ros message (data read from the pipe is in bytes: need to convert to string)
-
-            msg_list = resp[1].decode("utf-8").split("\n")
-            topic_name = msg_list[0]
-            if msg_list[1] == "rosgraph_msgs/Clock":
-                if msg_list[0] not in object_class.pub_dict:
-                    object_class.create_publisher(topic_name, Clock)
-                sim_time_msg = json_message_converter.convert_json_to_ros_message('rosgraph_msgs/Clock', msg_list[2])
-                object_class.pub_dict[topic_name].publish(sim_time_msg)
-
-            elif msg_list[1] == "nav_msgs/Odometry":
-                if msg_list[0] not in object_class.pub_dict:
-                    object_class.create_publisher(topic_name, Odometry)
-                odom_msg = json_message_converter.convert_json_to_ros_message('nav_msgs/Odometry', msg_list[2])
-                object_class.pub_dict[topic_name].publish(odom_msg)
-
-            elif msg_list[1] == "sensor_msgs/LaserScan":
-                if msg_list[0] not in object_class.pub_dict:
-                    object_class.create_publisher(topic_name, LaserScan)
-                scan_msg = json_message_converter.convert_json_to_ros_message('sensor_msgs/LaserScan', msg_list[2])
-                for count, value in enumerate(scan_msg.ranges):
-                    if float(value) == 1000:
-                        scan_msg.ranges[count] = float('Inf')
-                object_class.pub_dict[topic_name].publish(scan_msg)
                 
                 # if len(msg_string[1]) == int(msg_string[0]):
                 #     s.sendall(msg_string[1])
@@ -165,17 +137,6 @@ if __name__ == '__main__':
                 # else:
                 #     s.sendall(str.encode(msg_string[1]))
                         # print(resp[1].decode("utf-8"))
-            elif msg_list[1] == "sensor_msgs/Imu":
-                if msg_list[0] not in object_class.pub_dict:
-                    object_class.create_publisher(topic_name, Imu)
-                imu_msg = json_message_converter.convert_json_to_ros_message('sensor_msgs/Imu', msg_list[2])
-                object_class.pub_dict[topic_name].publish(imu_msg)
-
-            elif msg_list[1] == "tf2_msgs/TFMessage":
-                if msg_list[0] not in object_class.pub_dict:
-                    object_class.create_publisher(topic_name, TFMessage)
-                tf_msg = json_message_converter.convert_json_to_ros_message('tf2_msgs/TFMessage', msg_list[2])
-                object_class.pub_dict[topic_name].publish(tf_msg)
 
 
     except rospy.ROSInterruptException:
