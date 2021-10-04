@@ -43,6 +43,7 @@ from sensor_msgs.msg import Imu
 from tf2_msgs.msg import TFMessage
 
 
+import socket
 
 class ROSMessagePublisher:
     def __init__(self):
@@ -101,6 +102,33 @@ if __name__ == '__main__':
         win32pipe.ConnectNamedPipe(pipe, None)
         print("got client from game!!")
 
+        HOST = '192.168.8.22'  # The rosbridge server's hostname or IP address
+        PORT = 9090        # The port used by the rosbridge server
+
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.connect((HOST, PORT))
+
+
+
+            while not rospy.is_shutdown():
+                data = None
+                read_sz = 64*1024
+                try:
+                    data = win32file.ReadFile(pipe, read_sz)[1]
+                    # make sure there is data read from the pipe
+                    if data == '':
+                        break
+                    else:
+                        s.sendall(data)
+                except Exception as e:
+                    print(e)
+                # data_len = len(resp[1])
+                #  convert json data from lua to ros message (data read from the pipe is in bytes: need to convert to string)
+                # msg_string = resp[1].decode("utf-8")
+                # msg_string = resp[1].split(b'\n')
+                # print(msg_string[0])
+                # print(len(msg_string[1]))
+                # print("-------------")
         while not rospy.is_shutdown():
             read_sz = 64*1024
             resp = win32file.ReadFile(pipe, read_sz)
@@ -130,6 +158,13 @@ if __name__ == '__main__':
                         scan_msg.ranges[count] = float('Inf')
                 object_class.pub_dict[topic_name].publish(scan_msg)
                 
+                # if len(msg_string[1]) == int(msg_string[0]):
+                #     s.sendall(msg_string[1])
+                # else:
+                #     print("not full message")
+                # else:
+                #     s.sendall(str.encode(msg_string[1]))
+                        # print(resp[1].decode("utf-8"))
             elif msg_list[1] == "sensor_msgs/Imu":
                 if msg_list[0] not in object_class.pub_dict:
                     object_class.create_publisher(topic_name, Imu)
