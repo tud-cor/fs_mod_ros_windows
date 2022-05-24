@@ -94,7 +94,15 @@ If you are not going to run the navigation stack, simply run:
 ```cmd
 python all_in_one_publisher.py
 ```
+#### Manual Control
 
+Open another cmd window, activate the base virtual environment you created and run the script:
+
+```cmd
+venv_modROS\Scripts\activate.bat
+cd path\to\fs_mod_ros_windows\nodes
+python Controller.py
+```
 
 #### Subscribing data
 
