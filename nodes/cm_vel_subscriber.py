@@ -41,7 +41,7 @@ class SharedMemorySegment(object):
         buflen_len=1, expected_size=None
     ):
         self.__buflen_len = buflen_len
-        self.__mw = MemWorker(name=process_name)
+        self.__mw = MemWorker(pid=32680)
         # sentinel values
         self.__marker_start = marker_start
         self.__marker_end = marker_end
@@ -161,13 +161,13 @@ def cml_vel_subscriber():
     rospy.init_node('cml_vel_subscriber', anonymous=True)
     
    
-    rospy.loginfo('Waiting for topic %s to be published...','cmd_vel')
-    rospy.wait_for_message('cmd_vel', Twist)
-    rospy.loginfo('%s topic is now available!', 'cmd_vel')
+    rospy.loginfo('Waiting for topic %s to be published...','cmd_vel_game')
+    rospy.wait_for_message('cmd_vel_game', Twist)
+    rospy.loginfo('%s topic is now available!', 'cmd_vel_game')
 
 
     # subscribed to joystick inputs on topic "joy"
-    rospy.Subscriber("cmd_vel", Twist, cmd_vel_callback)
+    rospy.Subscriber("cmd_vel_game", Twist, cmd_vel_callback)
     rospy.spin()
 
 if __name__ == '__main__':
