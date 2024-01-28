@@ -21,19 +21,6 @@ Clone the repository or download the `.zip` at any location
 git clone https://github.com/tud-cor/fs_mod_ros_windows.git
 ```
 
-#### Creating the symbolic link
-
-In order to exchange data with the Python side of the mod, the script uses a symbolic link to a *named pipe*.
-The symbolic link needs to be created *only once*. Do not create it every time the FarmSim is rebooted.
-
-Open a `cmd` window and run the following command:
-
-```cmd
-mklink "%USERPROFILE%\Documents\My Games\FarmingSimulator2019\mods\modROS\ROS_messages" \\.\pipe\ROS_messages
-```
-
-If you get the message *You do not have sufficient privilege to perform this operation*, right-click the Command Prompt shortcut, and select __Run as administrator__ to start an elevated shell. Then try creating the symbolic link again.
-
 #### Setting up Python 3 `virtualenv`
 
 ```cmd
