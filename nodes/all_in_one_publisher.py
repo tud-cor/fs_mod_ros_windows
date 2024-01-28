@@ -82,21 +82,10 @@ def create_pipe(pipe_name):
 if __name__ == '__main__':
 
     try:
-        named_pipe_path = os.path.join(os.environ['USERPROFILE'], "Documents/My Games/FarmingSimulator2019/mods/modROS/ROS_messages")
-        # check if a symbolic link to a named pipe has been created
-        if not (os.path.islink(named_pipe_path)):
-            print("Cannot find required symbolic link, has it been created? Please refer to the readme for information.")
-            sys.exit(1)
-        else:
-            print("symbolic link has already been created")
-
-        # wait a bit to ensure that symbolic links have been created
-        time.sleep(1)
-
         object_class = ROSMessagePublisher()
 
         rospy.init_node('ros_publisher', anonymous=True)
-        pipe = create_pipe("ROS_messages")
+        pipe = create_pipe("FS19_modROS_pipe")
         print("waiting for client from FarmSim19")
         win32pipe.ConnectNamedPipe(pipe, None)
         print("got client from game!!")
